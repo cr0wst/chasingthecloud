@@ -10,8 +10,9 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.example-secrets-app.rule=Host(`env.chasingthe.cloud`)"
-      - "traefik.http.routers.example-secrets-app.entrypoints=web"
+      - "traefik.http.routers.example-secrets-app.entrypoints=websecure"
       - "traefik.http.services.example-secrets-app.loadbalancer.server.port=3000"
+      - "traefik.http.routers.example-secrets-app.tls.certresolver=myresolver"
     secrets:
       - example-secrets-env-secret
     entrypoint: >
