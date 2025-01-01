@@ -2,13 +2,25 @@ version: "3.8"
 
 services:
   app:
-    image: example-secrets-env_app:latest
-    ports:
-      - "3000:80"
+    image: ghcr.io/cr0wst/example-secrets-env:latest
     environment:
       - NON_SECRET_ENV_VAR=example_value
+    networks:
+      - web
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.example-secrets-app.rule=Host(`env.chasingthe.cloud`)"
+      - "traefik.http.routers.example-secrets-app.entrypoints=web"
+      - "traefik.http.services.example-secrets-app.loadbalancer.server.port=3000"
+    secrets:
+      - example-secrets-env-secret
+    entrypoint: >
+      sh -c "cp /run/secrets/example-secrets-env-secret /app/.env &&
+             npm start" # Replace `npm start` with your actual application start command
+networks:
+  web:
+    external: true
 
 secrets:
   example-secrets-env-secret:
     external: true
-    file: /app/.env
