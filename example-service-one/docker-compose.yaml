@@ -1,0 +1,12 @@
+services:
+  whoami:
+    image: "traefik/whoami"
+    networks:
+      - web
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.whoami.rule=Host(`whoami.chasingthe.cloud`)"
+      - "traefik.http.routers.whoami.entrypoints=web"
+networks:
+  web:
+    external: true

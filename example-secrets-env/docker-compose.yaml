@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  app:
+    image: example-secrets-env_app:latest
+    ports:
+      - "3000:80"
+    environment:
+      - NON_SECRET_ENV_VAR=example_value
+
+secrets:
+  example-secrets-env-secret:
+    external: true
+    file: /app/.env
