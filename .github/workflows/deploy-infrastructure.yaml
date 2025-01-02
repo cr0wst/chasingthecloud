@@ -1,9 +1,8 @@
-name: Deploy Staging
+name: Deploy Infrastructure
 on:
   push:
     branches:
       - main
-
 jobs:
   deploy-traefik:
     runs-on: ubuntu-latest

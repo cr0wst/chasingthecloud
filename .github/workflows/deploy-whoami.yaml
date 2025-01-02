@@ -1,0 +1,19 @@
+name: Deploy Infrastructure
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout codebase
+        uses: actions/checkout@v2
+      - name: "Docker Stack Deploy: Traefik"
+        uses: cssnr/stack-deploy-action@v1
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          user: ${{ secrets.REMOTE_USER }}
+          ssh_key: ${{ secrets.REMOTE_PRIVATE_KEY }}
+          file: "whoami/docker-stack.yaml"
+          name: "whoami"
