@@ -1,4 +1,4 @@
-name: Deploy Infrastructure
+name: Deploy Application
 on:
   push:
     branches:
@@ -9,7 +9,7 @@ jobs:
     steps:
       - name: Checkout codebase
         uses: actions/checkout@v2
-      - name: "Docker Stack Deploy: Traefik"
+      - name: "Docker Stack Deploy: whoami"
         uses: cssnr/stack-deploy-action@v1
         with:
           host: ${{ secrets.REMOTE_HOST }}
