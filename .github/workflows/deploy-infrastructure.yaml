@@ -10,12 +10,11 @@ jobs:
     steps:
       - name: Checkout codebase
         uses: actions/checkout@v2
-
-      - name: Deploy Traefik
-        uses: kitconcept/docker-stack-deploy@v1.0.1
+      - name: "Docker Stack Deploy: Traefik"
+        uses: cssnr/stack-deploy-action@v1
         with:
-          remote_host: ${{ secrets.REMOTE_HOST }}
-          remote_user: ${{ secrets.REMOTE_USER }}
-          remote_private_key: ${{ secrets.REMOTE_PRIVATE_KEY }}
-          stack_file: "infrastructure/traefik-stack.yaml"
-          stack_name: "traefik"
+          host: ${{ secrets.REMOTE_HOST }}
+          user: ${{ secrets.REMOTE_USER }}
+          ssh_key: ${{ secrets.REMOTE_PRIVATE_KEY }}
+          file: "infrastructure/traefik-stack.yaml"
+          name: "traefik"
