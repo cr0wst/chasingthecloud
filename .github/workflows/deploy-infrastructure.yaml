@@ -18,3 +18,11 @@ jobs:
           ssh_key: ${{ secrets.REMOTE_PRIVATE_KEY }}
           file: "infrastructure/traefik-stack.yaml"
           name: "traefik"
+      - name: "Docker Stack Deploy: Swarmpit"
+        uses: cssnr/stack-deploy-action@v1
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          user: ${{ secrets.REMOTE_USER }}
+          ssh_key: ${{ secrets.REMOTE_PRIVATE_KEY }}
+          file: "infrastructure/swarmpit-stack.yaml"
+          name: "swarmpit"
