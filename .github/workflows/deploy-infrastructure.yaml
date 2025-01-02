@@ -5,7 +5,7 @@ on:
       - main
 
 jobs:
-  deploy:
+  deploy-traefik:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout codebase
@@ -18,6 +18,11 @@ jobs:
           ssh_key: ${{ secrets.REMOTE_PRIVATE_KEY }}
           file: "infrastructure/traefik-stack.yaml"
           name: "traefik"
+  deploy-swarmpit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout codebase
+        uses: actions/checkout@v2
       - name: "Docker Stack Deploy: Swarmpit"
         uses: cssnr/stack-deploy-action@v1
         with:
