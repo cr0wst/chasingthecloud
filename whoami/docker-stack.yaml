@@ -2,7 +2,7 @@ services:
   whoami:
     image: "traefik/whoami"
     deploy:
-      replicas: 5
+      replicas: 1
     networks:
       - web
     labels:
