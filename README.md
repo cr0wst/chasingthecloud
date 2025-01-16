@@ -62,3 +62,51 @@ git commit -m "Initial commit"
 
 git push -u origin main
 ```
+
+## Making ArgoCD Self-Managed
+
+After the initial installation, we can make ArgoCD manage itself using GitOps principles. This ensures our ArgoCD installation is version controlled and can be recovered easily.
+
+1. Create a [kustomization](https://kustomize.io/) file that references the upstream ArgoCD manifests:
+
+```yaml
+# infrastructure/argocd/kustomization.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - https://raw.githubusercontent.com/argoproj/argo-cd/v2.13.3/manifests/install.yaml
+```
+
+2. Create an Application manifest for ArgoCD:
+
+```yaml
+# infrastructure/argocd/application.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/cr0wst/chasingthecloud.git
+    targetRevision: HEAD
+    path: infrastructure/argocd
+    kustomize: {}
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+```
+
+3. Apply the Application manifest:
+
+```bash
+kubectl apply -f infrastructure/argocd/application.yaml
+```
+
+Now ArgoCD will manage its own installation. Any changes to ArgoCD should be made through the repository rather than directly using kubectl, following GitOps practices.
