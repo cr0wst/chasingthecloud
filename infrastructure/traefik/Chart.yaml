@@ -4,3 +4,7 @@ description: A Helm chart for deploying Traefik
 type: application
 version: 25.0.0
 appVersion: 2.9.6
+dependencies:
+  - name: traefik
+    version: "25.0.0"
+    repository: "https://traefik.github.io/charts"
