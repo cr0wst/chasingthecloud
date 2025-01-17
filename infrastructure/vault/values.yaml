@@ -1,20 +1,35 @@
-global:
-  enabled: true
+vault:
+  global:
+    enabled: true
+  
+  server:
+    enabled: true
+    ui:
+      enabled: true
+    service:
+      type: ClusterIP
+    dataStorage:
+      enabled: true
+      storageClass: standard
+    ha:
+      enabled: false
+    
+    # Disable readiness probe until vault is initialized
+    readinessProbe:
+      enabled: false
+    # Disable liveness probe until vault is initialized
+    livenessProbe:
+      enabled: false
+    
+    # Add annotations to force recreation
+    annotations:
+      argocd.argoproj.io/sync-options: Replace=true
 
-server:
-  enabled: true
-  ui:
+  injector:
     enabled: true
-  service:
-    type: ClusterIP
-  dataStorage:
+
+  csi:
     enabled: true
-    storageClass: standard
-  ha:
+
+  tls:
     enabled: false
-injector:
-  enabled: true
-csi:
-  enabled: true
-tls:
-  enabled: false

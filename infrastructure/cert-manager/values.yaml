@@ -1,16 +1,32 @@
 installCRDs: true
-extraResources:
-  - apiVersion: cert-manager.io/v1
-    kind: ClusterIssuer
-    metadata:
-      name: letsencrypt-prod
-    spec:
-      acme:
-        email: steve@smcrow.com
-        server: https://acme-v02.api.letsencrypt.org/directory
-        privateKeySecretRef:
-          name: letsencrypt-prod
-        solvers:
-          - http01:
-              ingress:
-                class: traefik
+
+cert-manager:
+  namespace: cert-manager
+  
+  # Disable the startup check until CRDs are properly installed
+  startupapicheck:
+    enabled: false
+  
+  # Configure webhook
+  webhook:
+    enabled: true
+    
+  # Configure cainjector
+  cainjector:
+    enabled: true
+
+  extraResources:
+    - apiVersion: cert-manager.io/v1
+      kind: ClusterIssuer
+      metadata:
+        name: letsencrypt-prod
+      spec:
+        acme:
+          email: steve@smcrow.com
+          server: https://acme-v02.api.letsencrypt.org/directory
+          privateKeySecretRef:
+            name: letsencrypt-prod
+          solvers:
+            - http01:
+                ingress:
+                  class: traefik
