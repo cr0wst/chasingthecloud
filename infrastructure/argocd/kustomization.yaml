@@ -4,9 +4,14 @@ kind: Kustomization
 resources:
   - https://raw.githubusercontent.com/argoproj/argo-cd/v2.13.3/manifests/install.yaml
   - ingress-route.yaml
+  - certificate.yaml
 
 patches:
-  - path: configmap-patch.yaml
+  - path: cmd-params-cm-patch.yaml
     target:
       kind: ConfigMap
       name: argocd-cmd-params-cm
+  - path: cm-patch.yaml
+    target:
+      kind: ConfigMap
+      name: argocd-cm

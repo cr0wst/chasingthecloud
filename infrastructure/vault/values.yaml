@@ -10,26 +10,27 @@ vault:
       type: ClusterIP
     dataStorage:
       enabled: true
-      storageClass: standard
+      size: 1Gi
+      storageClass: local-path
     ha:
       enabled: false
+      
+    # Configure startup probe instead of readiness/liveness
+    # This gives Vault time to start up without failing health checks
+    startupProbe:
+      enabled: true
+      failureThreshold: 12
+      initialDelaySeconds: 10
+      periodSeconds: 10
     
-    # Disable readiness probe until vault is initialized
+    # Disable readiness/liveness probes since we're using startup probe
     readinessProbe:
       enabled: false
-    # Disable liveness probe until vault is initialized
     livenessProbe:
       enabled: false
-    
-    # Add annotations to force recreation
-    annotations:
-      argocd.argoproj.io/sync-options: Replace=true
 
   injector:
     enabled: true
 
   csi:
     enabled: true
-
-  tls:
-    enabled: false
