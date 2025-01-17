@@ -1,4 +1,25 @@
 apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: apps
+  namespace: argocd
+spec:
+  description: Project for user applications
+  sourceRepos:
+    - https://github.com/cr0wst/chasingthecloud.git
+  destinations:
+    - namespace: production
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: cert-manager.io
+      kind: Certificate
+    - group: ""
+      kind: Namespace
+  namespaceResourceWhitelist:
+    - group: '*'
+      kind: '*' 
+---
+apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
   name: apps
@@ -30,22 +51,3 @@ spec:
         automated:
           prune: true
           selfHeal: true
----
-apiVersion: argoproj.io/v1alpha1
-kind: AppProject
-metadata:
-  name: apps
-  namespace: argocd
-spec:
-  description: Project for user applications
-  sourceRepos:
-    - https://github.com/cr0wst/chasingthecloud.git
-  destinations:
-    - namespace: production
-      server: https://kubernetes.default.svc
-  clusterResourceWhitelist:
-    - group: cert-manager.io
-      kind: Certificate
-  namespaceResourceWhitelist:
-    - group: '*'
-      kind: '*' 
