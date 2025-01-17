@@ -11,12 +11,6 @@ spec:
     metadata:
       labels:
         app: env
-      annotations:
-        vault.security.banzaicloud.io/vault-addr: "http://vault.bank-vaults:8200"
-        vault.security.banzaicloud.io/vault-path: "apps/whoami"
-        vault.security.banzaicloud.io/vault-role: "application-secrets"
-        vault.security.banzaicloud.io/vault-skip-verify: "true"
-        vault.security.banzaicloud.io/vault-auth-path: "kubernetes"
     spec:
       containers:
       - name: env
@@ -29,8 +23,3 @@ spec:
             done
         ports:
         - containerPort: 8080
-        env:
-        - name: MESSAGE
-          value: "vault:apps/whoami#MESSAGE"
-        - name: COLOR
-          value: "vault:apps/whoami#COLOR"
