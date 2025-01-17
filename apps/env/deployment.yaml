@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: env
+  namespace: production
+spec:
+  selector:
+    matchLabels:
+      app: env
+  template:
+    metadata:
+      labels:
+        app: env
+      annotations:
+        vault.security.banzaicloud.io/vault-addr: "http://vault.bank-vaults:8200"
+        vault.security.banzaicloud.io/vault-path: "apps/whoami"
+        vault.security.banzaicloud.io/vault-role: "application-secrets"
+        vault.security.banzaicloud.io/vault-skip-verify: "true"
+        vault.security.banzaicloud.io/vault-auth-path: "kubernetes"
+    spec:
+      containers:
+      - name: env
+        image: busybox
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            while true; do
+              echo -e "HTTP/1.1 200 OK\n\nEnvironment Variables:\n$(env)" | nc -l -p 8080
+            done
+        ports:
+        - containerPort: 8080
+        env:
+        - name: MESSAGE
+          value: "vault:apps/whoami#MESSAGE"
+        - name: COLOR
+          value: "vault:apps/whoami#COLOR"

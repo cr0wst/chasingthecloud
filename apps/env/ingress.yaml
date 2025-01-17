@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: env
+  namespace: production
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  rules:
+    - host: env.chasingthe.cloud
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: env
+                port:
+                  number: 80
+  tls:
+    - hosts:
+        - env.chasingthe.cloud
+      secretName: env-tls 
