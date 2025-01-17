@@ -16,7 +16,7 @@ spec:
     metadata:
       name: '{{.path.basename}}'
     spec:
-      project: "apps"
+      project: apps
       source:
         repoURL: https://github.com/cr0wst/chasingthecloud.git
         targetRevision: HEAD
@@ -29,4 +29,23 @@ spec:
         - CreateNamespace=true
         automated:
           prune: true
-          selfHeal: true 
+          selfHeal: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: apps
+  namespace: argocd
+spec:
+  description: Project for user applications
+  sourceRepos:
+    - https://github.com/cr0wst/chasingthecloud.git
+  destinations:
+    - namespace: production
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: cert-manager.io
+      kind: Certificate
+  namespaceResourceWhitelist:
+    - group: '*'
+      kind: '*' 
