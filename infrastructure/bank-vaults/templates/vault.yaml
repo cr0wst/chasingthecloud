@@ -1,0 +1,36 @@
+apiVersion: vault.banzaicloud.com/v1alpha1
+kind: Vault
+metadata:
+  name: vault
+  namespace: bank-vaults
+spec:
+  serviceAccount: vault
+  size: 1
+  image: vault:1.12.7
+  bankVaultsImage: ghcr.io/bank-vaults/bank-vaults:latest
+
+  # Match live configuration
+  unsealConfig:
+    kubernetes: {}
+    options: {}
+  
+  vaultContainerSpec:
+    name: ""
+
+  config:
+    api_addr: http://vault:8200
+    ui: true
+    listener:
+      tcp:
+        address: "0.0.0.0:8200"
+        tls_disable: true
+    storage:
+      file:
+        path: "/vault/file"
+
+  volumeMounts:
+    - name: vault-file
+      mountPath: /vault/file
+  volumes:
+    - name: vault-file
+      emptyDir: {} 

@@ -1,0 +1,9 @@
+apiVersion: v2
+name: bank-vaults
+description: Bank-Vaults Vault operator
+type: application
+version: 0.1.0
+dependencies:
+  - name: vault-operator
+    version: 1.21.0
+    repository: oci://ghcr.io/bank-vaults/helm-charts 

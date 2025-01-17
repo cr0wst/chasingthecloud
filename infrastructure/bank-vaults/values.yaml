@@ -1,0 +1,4 @@
+vault-operator:
+  image:
+    repository: ghcr.io/bank-vaults/vault-operator
+    tag: latest 
