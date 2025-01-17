@@ -1,28 +1,32 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: infrastructure-applicationset
+  name: infrastructure
   namespace: argocd
 spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
   generators:
-    - git:
-        repoURL: https://github.com/chasingthecloud.git
-        revision: HEAD
-        directories:
-          - path: infrastructure/*
+  - git:
+      repoURL: https://github.com/cr0wst/chasingthecloud.git
+      revision: HEAD
+      directories:
+      - path: infrastructure/*
   template:
     metadata:
-      name: "{{path.basename}}"
+      name: '{{.path.basename}}'
     spec:
-      project: default
+      project: "default"
       source:
-        repoURL: https://github.com/chasingthecloud.git
+        repoURL: https://github.com/cr0wst/chasingthecloud.git
         targetRevision: HEAD
-        path: "{{path}}"
+        path: '{{.path.path}}'
       destination:
         server: https://kubernetes.default.svc
-        namespace: "{{path.basename}}"
+        namespace: '{{.path.basename}}'
       syncPolicy:
+        syncOptions:
+        - CreateNamespace=true
         automated:
           prune: true
           selfHeal: true
