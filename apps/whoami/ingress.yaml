@@ -6,11 +6,6 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
 spec:
-  ingressClassName: traefik
-  tls:
-    - hosts:
-        - whoami.chasingthe.cloud
-      secretName: whoami-tls
   rules:
     - host: whoami.chasingthe.cloud
       http:
@@ -21,4 +16,8 @@ spec:
               service:
                 name: whoami
                 port:
-                  number: 80 
+                  number: 80
+  tls:
+    - hosts:
+        - whoami.chasingthe.cloud
+      secretName: whoami-tls 
