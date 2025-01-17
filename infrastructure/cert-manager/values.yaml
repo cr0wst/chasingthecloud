@@ -1,20 +1,6 @@
-installCRDs: true
-
 cert-manager:
-  namespace: cert-manager
+  installCRDs: true
   
-  # Disable the startup check until CRDs are properly installed
-  startupapicheck:
-    enabled: false
-  
-  # Configure webhook
-  webhook:
-    enabled: true
-    
-  # Configure cainjector
-  cainjector:
-    enabled: true
-
   extraResources:
     - apiVersion: cert-manager.io/v1
       kind: ClusterIssuer
