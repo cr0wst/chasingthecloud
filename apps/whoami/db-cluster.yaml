@@ -24,3 +24,11 @@ spec:
   storage:
     size: 1Gi
     storageClass: local-path
+
+  # Bootstrap configuration
+  bootstrap:
+    initdb:
+      database: whoami
+      owner: whoami_user
+      secret:
+        name: test-db-app

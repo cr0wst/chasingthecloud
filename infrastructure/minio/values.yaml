@@ -1,0 +1,39 @@
+minio:
+  mode: standalone
+  persistence:
+    size: 10Gi
+    storageClass: local-path
+  
+  resources:
+    requests:
+      memory: 512Mi
+      cpu: 250m
+    limits:
+      memory: 1Gi
+      cpu: 500m
+
+  ingress:
+    enabled: true
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    path: /
+    hosts:
+      - minio.chasingthe.cloud
+    tls:
+      - secretName: minio-tls
+        hosts:
+          - minio.chasingthe.cloud
+
+  consoleIngress:
+    enabled: true
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    path: /
+    hosts:
+      - minio.chasingthe.cloud
+    tls:
+      - secretName: minio-console-tls
+        hosts:
+          - minio.chasingthe.cloud
