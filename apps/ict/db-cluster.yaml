@@ -1,0 +1,31 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: ict-db
+  namespace: production
+spec:
+  instances: 1
+  postgresql:
+    parameters:
+      max_connections: "100"
+      shared_buffers: "256MB"
+      version: "16.1"
+  
+  resources:
+    requests:
+      memory: "512Mi"
+      cpu: "200m"
+    limits:
+      memory: "1Gi"
+      cpu: "500m"
+  
+  storage:
+    size: 1Gi
+    storageClass: local-path
+
+  bootstrap:
+    initdb:
+      database: ict
+      owner: ict_user
+      secret:
+        name: ict-db-app 
