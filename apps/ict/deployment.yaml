@@ -12,6 +12,8 @@ spec:
       labels:
         app: ict
     spec:
+      imagePullSecrets:
+        - name: ghcr-secret
       containers:
       - name: ict
         image: ghcr.io/indy-center/controller-tools:latest
