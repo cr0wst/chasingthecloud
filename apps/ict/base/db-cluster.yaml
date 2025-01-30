@@ -24,4 +24,23 @@ spec:
 
   bootstrap:
     initdb:
-      database: ict 
+      database: ict
+
+  backup:
+    barmanObjectStore:
+      destinationPath: "file:///backup"
+      endpointURL: ""
+      serverName: ict-db
+      wal:
+        compression: gzip
+        maxParallel: 1
+    retentionPolicy: "7d"
+
+  # Add volume for backups
+  volumes:
+    - name: backup-volume
+      persistentVolumeClaim:
+        claimName: ict-db-backup
+  volumeMounts:
+    - name: backup-volume
+      mountPath: "/backup" 
