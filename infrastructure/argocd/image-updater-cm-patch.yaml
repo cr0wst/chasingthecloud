@@ -4,13 +4,4 @@ metadata:
   name: argocd-image-updater-config
   namespace: argocd
 data:
-  # Add default update strategy for all applications in development namespace
-  applications.yaml: |
-    applications:
-      - name: "*"
-        namespace: "development"
-        image_list:
-          - name: "ict"
-            pattern: "ghcr.io/indy-center/controller-tools"
-            update_strategy: latest
-            pull_secret: ghcr-secret 
+  # Configuration is handled via ArgoCD application annotations 
