@@ -54,9 +54,7 @@ spec:
   templatePatch: |
     metadata:
       annotations:
-        {{- $config := .contents | fromYaml -}}
-        {{- if hasKey $config "annotations" }}
-        {{- range $key, $value := $config.annotations }}
-        {{ $key }}: {{ $value | quote }}
-        {{- end }}
-        {{- end }}
+        argocd-image-updater.argoproj.io/image-list: '{{ (fromYaml .contents).annotations."argocd-image-updater.argoproj.io/image-list" }}'
+        argocd-image-updater.argoproj.io/ict.pull-secret: '{{ (fromYaml .contents).annotations."argocd-image-updater.argoproj.io/ict.pull-secret" }}'
+        argocd-image-updater.argoproj.io/ict.update-strategy: '{{ (fromYaml .contents).annotations."argocd-image-updater.argoproj.io/ict.update-strategy" }}'
+        argocd-image-updater.argoproj.io/write-back-method: '{{ (fromYaml .contents).annotations."argocd-image-updater.argoproj.io/write-back-method" }}'
