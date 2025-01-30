@@ -1,0 +1,7 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Backup
+metadata:
+  name: ict-db-backup
+spec:
+  cluster:
+    name: ict-db 

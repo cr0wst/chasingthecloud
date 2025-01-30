@@ -7,3 +7,4 @@ resources:
   - ingress.yaml
   - db-cluster.yaml
   - backup-pvc.yaml
+  - backup.yaml
