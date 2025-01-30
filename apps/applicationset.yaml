@@ -31,24 +31,22 @@ spec:
   - git:
       repoURL: https://github.com/cr0wst/chasingthecloud.git
       revision: HEAD
-      directories:
-      - path: apps/*/overlays/development
       files:
       - path: "apps/*/overlays/development/app-config.yaml"
   template:
     metadata:
-      name: '{{ index (splitList "/" .path.path) 1 }}'
+      name: '{{ base (dir .path) }}'
       annotations:
-        argocd-image-updater.argoproj.io/image-list: '{{ with index .files.path 0 }}{{ with .contents | fromYaml }}{{ with .annotations }}{{ get . "argocd-image-updater.argoproj.io/image-list" }}{{ end }}{{ end }}{{ end }}'
-        argocd-image-updater.argoproj.io/ict.pull-secret: '{{ with index .files.path 0 }}{{ with .contents | fromYaml }}{{ with .annotations }}{{ get . "argocd-image-updater.argoproj.io/ict.pull-secret" }}{{ end }}{{ end }}{{ end }}'
-        argocd-image-updater.argoproj.io/ict.update-strategy: '{{ with index .files.path 0 }}{{ with .contents | fromYaml }}{{ with .annotations }}{{ get . "argocd-image-updater.argoproj.io/ict.update-strategy" }}{{ end }}{{ end }}{{ end }}'
-        argocd-image-updater.argoproj.io/write-back-method: '{{ with index .files.path 0 }}{{ with .contents | fromYaml }}{{ with .annotations }}{{ get . "argocd-image-updater.argoproj.io/write-back-method" }}{{ end }}{{ end }}{{ end }}'
+        argocd-image-updater.argoproj.io/image-list: '{{ .contents | fromYaml | get "annotations" "argocd-image-updater.argoproj.io/image-list" }}'
+        argocd-image-updater.argoproj.io/ict.pull-secret: '{{ .contents | fromYaml | get "annotations" "argocd-image-updater.argoproj.io/ict.pull-secret" }}'
+        argocd-image-updater.argoproj.io/ict.update-strategy: '{{ .contents | fromYaml | get "annotations" "argocd-image-updater.argoproj.io/ict.update-strategy" }}'
+        argocd-image-updater.argoproj.io/write-back-method: '{{ .contents | fromYaml | get "annotations" "argocd-image-updater.argoproj.io/write-back-method" }}'
     spec:
       project: apps
       source:
         repoURL: https://github.com/cr0wst/chasingthecloud.git
         targetRevision: HEAD
-        path: '{{.path.path}}'
+        path: '{{ dir .path }}'
       destination:
         server: https://kubernetes.default.svc
         namespace: development
