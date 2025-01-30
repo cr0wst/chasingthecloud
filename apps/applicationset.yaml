@@ -30,22 +30,7 @@ spec:
       repoURL: https://github.com/cr0wst/chasingthecloud.git
       revision: HEAD
       files:
-      - path: "apps/*/overlays/development/kustomization.yaml"
+      - path: "apps/*/application.yaml"
   template:
-    metadata:
-      name: '{{ base (dir (dir (dir .path))) }}'
-    spec:
-      project: apps
-      source:
-        repoURL: https://github.com/cr0wst/chasingthecloud.git
-        targetRevision: HEAD
-        path: '{{ dir (dir .path) }}'
-      destination:
-        server: https://kubernetes.default.svc
-        namespace: development
-      syncPolicy:
-        syncOptions:
-        - CreateNamespace=true
-        automated:
-          prune: true
-          selfHeal: true
+    metadata: '{{ fromYaml .contents | get "metadata" }}'
+    spec: '{{ fromYaml .contents | get "spec" }}'
