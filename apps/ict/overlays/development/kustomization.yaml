@@ -4,9 +4,7 @@ kind: Kustomization
 resources:
   - ../../base
 
-commonAnnotations:
-  argocd-image-updater.argoproj.io/image-list: ict=ghcr.io/indy-center/controller-tools
-  argocd-image-updater.argoproj.io/ict.pull-secret: ghcr-secret
-  argocd-image-updater.argoproj.io/ict.update-strategy: latest
+patchesStrategicMerge:
+  - application-patch.yaml
 
 namespace: development 
