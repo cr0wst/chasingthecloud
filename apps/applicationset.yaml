@@ -33,9 +33,12 @@ spec:
       revision: HEAD
       directories:
       - path: apps/*/overlays/development
+      files:
+      - path: "apps/*/app-config.yaml"
   template:
     metadata:
       name: '{{ index (splitList "/" .path.path) 1 }}'
+      annotations: '{{ with index .files.path 0 }}{{ .contents | fromYaml | toJson }}{{ end }}'
     spec:
       project: apps
       source:
