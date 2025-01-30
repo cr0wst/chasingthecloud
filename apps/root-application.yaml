@@ -1,4 +1,27 @@
 apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: apps
+  namespace: argocd
+spec:
+  description: Project for user applications
+  sourceRepos:
+    - https://github.com/cr0wst/chasingthecloud.git
+  destinations:
+    - namespace: development
+      server: https://kubernetes.default.svc
+    - namespace: argocd
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: cert-manager.io
+      kind: Certificate
+    - group: ""
+      kind: Namespace
+  namespaceResourceWhitelist:
+    - group: '*'
+      kind: '*'
+---
+apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: root
