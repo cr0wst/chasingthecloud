@@ -13,9 +13,4 @@ patches:
         value: Always
     target:
       kind: Deployment
-      name: ict
-
-commonAnnotations:
-  argocd-image-updater.argoproj.io/image-list: ict=ghcr.io/indy-center/controller-tools
-  argocd-image-updater.argoproj.io/ict.pull-secret: pullsecret:argocd/ghcr-secret
-  argocd-image-updater.argoproj.io/ict.update-strategy: latest 
+      name: ict 
