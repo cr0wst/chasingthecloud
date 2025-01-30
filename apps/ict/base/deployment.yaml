@@ -18,6 +18,9 @@ spec:
       - name: ict
         image: ghcr.io/indy-center/controller-tools:latest
         command: ["npx", "tsx", "src/server.ts"]
+        ports:
+        - containerPort: 3000
+          protocol: TCP
         env:
           - name: DATABASE_URL
             value: "postgresql://ict:$(password)@ict-db-rw:5432/ict"
@@ -32,6 +35,28 @@ spec:
               name: ict-secrets
           - secretRef:
               name: ict-db-app
+        startupProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 15
+          failureThreshold: 60
+          periodSeconds: 5
+          timeoutSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 45
+          periodSeconds: 30
+          timeoutSeconds: 10
         resources:
           requests:
             memory: "128Mi"
