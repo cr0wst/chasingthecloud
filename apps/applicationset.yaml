@@ -25,12 +25,21 @@ metadata:
   name: apps
   namespace: argocd
 spec:
+  goTemplate: true
   generators:
   - git:
       repoURL: https://github.com/cr0wst/chasingthecloud.git
       revision: HEAD
       files:
       - path: "apps/*/application.yaml"
-  template:
-    metadata: '{{ fromYaml .contents | get "metadata" }}'
-    spec: '{{ fromYaml .contents | get "spec" }}'
+  template: |
+    {{- $app := fromYaml .contents -}}
+    metadata:
+      name: {{ $app.metadata.name }}
+      namespace: {{ $app.metadata.namespace }}
+      {{- with $app.metadata.annotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    spec:
+      {{- toYaml $app.spec | nindent 6 }}
