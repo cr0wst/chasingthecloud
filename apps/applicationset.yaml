@@ -34,7 +34,7 @@ spec:
       directories:
       - path: apps/*/overlays/development
       files:
-      - path: "apps/*/app-config.yaml"
+      - path: "apps/*/overlays/development/app-config.yaml"
   template:
     metadata:
       name: '{{ index (splitList "/" .path.path) 1 }}'
