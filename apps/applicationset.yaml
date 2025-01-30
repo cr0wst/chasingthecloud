@@ -32,10 +32,10 @@ spec:
       repoURL: https://github.com/cr0wst/chasingthecloud.git
       revision: HEAD
       directories:
-      - path: apps/*
+      - path: apps/*/overlays/development
   template:
     metadata:
-      name: '{{.path.basename}}'
+      name: '{{`{{index (splitList "/" .path.path) 1}}`}}'
     spec:
       project: apps
       source:
