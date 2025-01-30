@@ -2,15 +2,11 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  - deployment.yaml
-  - service.yaml
-  - ingress.yaml
-  - db-cluster.yaml
+  - ../../base
 
 commonAnnotations:
   argocd-image-updater.argoproj.io/image-list: ict=ghcr.io/indy-center/controller-tools
   argocd-image-updater.argoproj.io/ict.pull-secret: ghcr-secret
   argocd-image-updater.argoproj.io/ict.update-strategy: latest
-  argocd-image-updater.argoproj.io/write-back-method: git
 
-namespace: development
+namespace: development 
