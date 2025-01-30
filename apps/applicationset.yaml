@@ -30,21 +30,16 @@ spec:
       repoURL: https://github.com/cr0wst/chasingthecloud.git
       revision: HEAD
       files:
-      - path: "apps/*/overlays/development/app-config.yaml"
+      - path: "apps/*/overlays/development/kustomization.yaml"
   template:
     metadata:
-      name: '{{ base (dir .path) }}'
-      annotations:
-        argocd-image-updater.argoproj.io/image-list: '{{ (fromYaml .contents).annotations."argocd-image-updater.argoproj.io/image-list" }}'
-        argocd-image-updater.argoproj.io/ict.pull-secret: '{{ (fromYaml .contents).annotations."argocd-image-updater.argoproj.io/ict.pull-secret" }}'
-        argocd-image-updater.argoproj.io/ict.update-strategy: '{{ (fromYaml .contents).annotations."argocd-image-updater.argoproj.io/ict.update-strategy" }}'
-        argocd-image-updater.argoproj.io/write-back-method: '{{ (fromYaml .contents).annotations."argocd-image-updater.argoproj.io/write-back-method" }}'
+      name: '{{ base (dir (dir (dir .path))) }}'
     spec:
       project: apps
       source:
         repoURL: https://github.com/cr0wst/chasingthecloud.git
         targetRevision: HEAD
-        path: '{{ dir .path }}'
+        path: '{{ dir (dir .path) }}'
       destination:
         server: https://kubernetes.default.svc
         namespace: development
