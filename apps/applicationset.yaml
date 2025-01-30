@@ -36,11 +36,6 @@ spec:
   template:
     metadata:
       name: '{{ base (dir .path) }}'
-      annotations:
-        argocd-image-updater.argoproj.io/image-list: '{{ .contents | fromYaml | get "annotations" "argocd-image-updater.argoproj.io/image-list" }}'
-        argocd-image-updater.argoproj.io/ict.pull-secret: '{{ .contents | fromYaml | get "annotations" "argocd-image-updater.argoproj.io/ict.pull-secret" }}'
-        argocd-image-updater.argoproj.io/ict.update-strategy: '{{ .contents | fromYaml | get "annotations" "argocd-image-updater.argoproj.io/ict.update-strategy" }}'
-        argocd-image-updater.argoproj.io/write-back-method: '{{ .contents | fromYaml | get "annotations" "argocd-image-updater.argoproj.io/write-back-method" }}'
     spec:
       project: apps
       source:
@@ -56,3 +51,12 @@ spec:
         automated:
           prune: true
           selfHeal: true
+  templatePatch: |
+    metadata:
+      annotations:
+        {{- $config := .contents | fromYaml -}}
+        {{- if hasKey $config "annotations" }}
+        {{- range $key, $value := $config.annotations }}
+        {{ $key }}: {{ $value | quote }}
+        {{- end }}
+        {{- end }}
