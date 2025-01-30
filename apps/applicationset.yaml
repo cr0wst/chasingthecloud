@@ -38,7 +38,11 @@ spec:
   template:
     metadata:
       name: '{{ index (splitList "/" .path.path) 1 }}'
-      annotations: '{{ with index .files.path 0 }}{{ .contents | fromYaml | toJson }}{{ end }}'
+      annotations:
+        argocd-image-updater.argoproj.io/image-list: '{{ with index .files.path 0 }}{{ with .contents | fromYaml }}{{ with .annotations }}{{ index . "argocd-image-updater.argoproj.io/image-list" }}{{ end }}{{ end }}{{ end }}'
+        argocd-image-updater.argoproj.io/ict.pull-secret: '{{ with index .files.path 0 }}{{ with .contents | fromYaml }}{{ with .annotations }}{{ index . "argocd-image-updater.argoproj.io/ict.pull-secret" }}{{ end }}{{ end }}{{ end }}'
+        argocd-image-updater.argoproj.io/ict.update-strategy: '{{ with index .files.path 0 }}{{ with .contents | fromYaml }}{{ with .annotations }}{{ index . "argocd-image-updater.argoproj.io/ict.update-strategy" }}{{ end }}{{ end }}{{ end }}'
+        argocd-image-updater.argoproj.io/write-back-method: '{{ with index .files.path 0 }}{{ with .contents | fromYaml }}{{ with .annotations }}{{ index . "argocd-image-updater.argoproj.io/write-back-method" }}{{ end }}{{ end }}{{ end }}'
     spec:
       project: apps
       source:
